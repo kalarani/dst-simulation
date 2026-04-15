@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+  app:
+    build: .
+    image: example/payment-service:0.0.1
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_PROFILES_ACTIVE=chaos-monkey
+      # reduce JVM memory for dev if desired:
+      - JAVA_TOOL_OPTIONS=-XX:+UseContainerSupport -XX:MaxRAMPercentage=60.0
+    command: --spring.profiles.active=chaos-monkey --chaos.monkey.enabled=true --chaos.monkey.watcher.service=true --chaos.monkey.assaults.latencyActive=true
