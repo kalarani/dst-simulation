@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+  order:
+    build: .
+    image: example/order-service:0.0.1
+    container_name: order
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=local
+      - JAVA_TOOL_OPTIONS=-XX:+UseContainerSupport -XX:MaxRAMPercentage=60.0
+  payment:
+    build: .
+    image: example/payment-service:0.0.1
+    container_name: payment
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_PROFILES_ACTIVE=local
+      - JAVA_TOOL_OPTIONS=-XX:+UseContainerSupport -XX:MaxRAMPercentage=60.0
+  app:
+    build: .
+    image: example/cart-service:0.0.1
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=local
+      - JAVA_TOOL_OPTIONS=-XX:+UseContainerSupport -XX:MaxRAMPercentage=60.0
+      - PAYMENT_URL=http://payment:8082
+      - ORDER_URL=http://order:8081
