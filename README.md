@@ -54,11 +54,8 @@ cd payment-service
 
 ### Run
 
-`be.idempotent` is a required property. Set `BE_IDEMPOTENT=true` to enable duplicate-payment protection,
-or `false` to simulate a buggy service that charges on every request.
-
 ```bash
-BE_IDEMPOTENT=true docker-compose up --build
+docker-compose up --build
 ```
 
 ### Verify
@@ -70,14 +67,14 @@ curl -s -X POST http://localhost:8082/payment \
   -d "order-123"
 # Expected: Payment initiated
 
-# Verify idempotency — same order-id a second time should not increment the count
+# Verify idempotency — same order-id a second time
 curl -s -X POST http://localhost:8082/payment \
   -H "Content-Type: text/plain" \
   -d "order-123"
 
 # Get payment count (resets to 0 after each call)
 curl -s http://localhost:8082/payment-count
-# Expected: 1
+# Expected: 2
 ```
 
 ---
@@ -109,10 +106,8 @@ Then start everything:
 
 ```bash
 cd cart-service
-BE_IDEMPOTENT=true MAX_ATTEMPTS=3 docker-compose up
+docker-compose up
 ```
-
-`MAX_ATTEMPTS` controls how many times the cart-service retries the payment service on failure.
 
 ### Verify
 
