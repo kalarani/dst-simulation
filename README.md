@@ -58,8 +58,7 @@ cd payment-service
 or `false` to simulate a buggy service that charges on every request.
 
 ```bash
-docker build -t example/payment-service:0.0.1 .
-docker run -p 8082:8082 -e BE_IDEMPOTENT=true example/payment-service:0.0.1
+BE_IDEMPOTENT=true docker-compose up --build
 ```
 
 ### Verify
@@ -71,14 +70,12 @@ curl -s -X POST http://localhost:8082/payment \
   -d "order-123"
 # Expected: Payment initiated
 
-# Get payment count (resets to 0 after each call)
-curl -s http://localhost:8082/payment-count
-# Expected: 1
-
 # Verify idempotency — same order-id a second time should not increment the count
 curl -s -X POST http://localhost:8082/payment \
   -H "Content-Type: text/plain" \
   -d "order-123"
+
+# Get payment count (resets to 0 after each call)
 curl -s http://localhost:8082/payment-count
 # Expected: 1
 ```
