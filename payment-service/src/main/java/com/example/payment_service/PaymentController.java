@@ -34,13 +34,13 @@ public class PaymentController {
 
     private void chargePayment(String orderId) {
         if (beIdempotent) {
-            System.out.println("Being idempotent - Keeping stock of processed orders");
+            log.info("Being idempotent - Keeping stock of processed orders");
             if (!processedOrders.contains(orderId)) {
                 processedOrders.add(orderId);
                 count.incrementAndGet();
             }
         } else {
-            System.out.println("Being buggy - incrementing payment count always");
+            log.info("Being buggy - incrementing payment count always");
             count.incrementAndGet();
         }
     }
