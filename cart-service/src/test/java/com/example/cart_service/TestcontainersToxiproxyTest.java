@@ -72,7 +72,7 @@ public class TestcontainersToxiproxyTest {
         payment = new GenericContainer<>("example/payment-service:0.0.1")
                 .withExposedPorts(8082)
                 .withNetwork(network)
-                .withEnv("BE_IDEMPOTENT", "true")
+                .withEnv("BE_IDEMPOTENT", "false")
                 .withNetworkAliases("payment");
         payment.start();
         paymentProxy = toxClient.createProxy("payment_proxy", "0.0.0.0:8666", "payment:8082");

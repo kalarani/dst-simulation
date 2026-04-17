@@ -28,3 +28,4 @@ services:
       - JAVA_TOOL_OPTIONS=-XX:+UseContainerSupport -XX:MaxRAMPercentage=60.0
       - PAYMENT_URL=http://payment:8082
       - ORDER_URL=http://order:8081
+      - MAX_ATTEMPTS=3
